@@ -30,8 +30,8 @@ func create(title string) {
 
 	// Create the zettel folder and file.
 	zpath = fmt.Sprintf("%s/%s", zpath, now.Format("20060102150405"))
-  readme := zpath + "/README.md"
-  if err := os.Mkdir(zpath, os.ModePerm); err != nil {
+	readme := zpath + "/README.md"
+	if err := os.Mkdir(zpath, os.ModePerm); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -41,46 +41,46 @@ func create(title string) {
 		return
 	}
 
-  if err := os.WriteFile(readme, []byte("# " + title), 0644); err != nil {
-    fmt.Println(err)
-    return
-  }
+	if err := os.WriteFile(readme, []byte("# "+title), 0644); err != nil {
+		fmt.Println(err)
+		return
+	}
 
-  // Open README in vim
+	// Open README in vim
 	cmd := exec.Command("vim", readme)
-  cmd.Stdin = os.Stdin
-  cmd.Stdout = os.Stdout
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-    fmt.Println(err)
-    return
-  }
+		fmt.Println(err)
+		return
+	}
 
-  // Git operations
-  os.Chdir(zpath)
+	// Git operations
+	os.Chdir(zpath)
 
-  gpull := exec.Command("git", "pull")
-  if err := gpull.Run(); err != nil {
-    fmt.Println(err)
-    return
-  }
+	gpull := exec.Command("git", "pull")
+	if err := gpull.Run(); err != nil {
+		fmt.Println(err)
+		return
+	}
 
-  ga := exec.Command("git", "add", ".")
-  if err := ga.Run(); err != nil {
-    fmt.Println(err)
-    return
-  }
+	ga := exec.Command("git", "add", ".")
+	if err := ga.Run(); err != nil {
+		fmt.Println(err)
+		return
+	}
 
-  gc := exec.Command("git", "commit", "-m", title)
-  if err := gc.Run(); err != nil {
-    fmt.Println(err)
-    return
-  }
+	gc := exec.Command("git", "commit", "-m", title)
+	if err := gc.Run(); err != nil {
+		fmt.Println(err)
+		return
+	}
 
-  gpush := exec.Command("git", "push")
-  if err := gpush.Run(); err != nil {
-    fmt.Println(err)
-    return
-  }
+	gpush := exec.Command("git", "push")
+	if err := gpush.Run(); err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func main() {
