@@ -42,6 +42,14 @@ func main() {
 		return
 	}
 
+	if os.Args[1] == "populatedb" {
+		// todo: what if ZETTELS not set?
+		if err := Populate_DB(db, os.Getenv("ZETTELS"), "2022"); err != nil {
+			fmt.Println(err)
+		}
+		return
+	}
+
 	fmt.Println("zet: command not found")
 	fmt.Println("Try 'zet --help' for more information.")
 }
