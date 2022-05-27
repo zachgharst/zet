@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/ZDGharst/zet/zet"
 )
 
 func help() {
@@ -19,8 +17,10 @@ func main() {
 	}
 
 	if os.Args[1] == "create" {
-		// what if ZETTELS not set?
-		zet.Create(os.Getenv("ZETTELS"), os.Args[2])
+		// todo: what if ZETTELS not set?
+		if err := Create(os.Getenv("ZETTELS"), os.Args[2]); err != nil {
+			fmt.Println(err)
+		}
 		return
 	}
 
