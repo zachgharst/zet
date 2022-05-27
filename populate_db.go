@@ -2,13 +2,16 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/ZDGharst/zet/models"
 	"gorm.io/gorm"
 )
 
+// Populate DB from the zettels directory by year
 func Populate_DB(db *gorm.DB, zettels_directory, year string) error {
 	var err error
 	dirs, err := ioutil.ReadDir(zettels_directory + "/" + year)
@@ -27,15 +30,22 @@ func Populate_DB(db *gorm.DB, zettels_directory, year string) error {
 
 		scanner := bufio.NewScanner(file)
 		scanner.Scan()
-		var firstln = scanner.Text()[2:]
+		var title = scanner.Text()[2:]
+		createdAt, _ := time.Parse("20060102150405", dir.Name())
 
 		zettels = append(zettels, models.Zettel{
-			Title:    firstln,
-			FilePath: dir.Name(),
+			Model: gorm.Model{
+				CreatedAt: createdAt,
+				UpdatedAt: createdAt,
+			},
+			Title:     title,
+			FilePath:  dir.Name(),
+			IsPrivate: false,
 		})
 	}
 
-	db.Create(&zettels)
+	result := db.Create(&zettels)
+	fmt.Println("Populated DB with", result.RowsAffected, "rows")
 
 	return err
 }
