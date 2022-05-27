@@ -7,12 +7,11 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/ZDGharst/zet/zet/models"
-	"gorm.io/driver/sqlite"
+	"github.com/ZDGharst/zet/models"
 	"gorm.io/gorm"
 )
 
-func Create(zettels_directory, title string) error {
+func Create(db *gorm.DB, zettels_directory, title string) error {
 	now := time.Now()
 
 	// Check if the year folder is already created, create if not
@@ -54,7 +53,6 @@ func Create(zettels_directory, title string) error {
 
 	// Create row in database
 	zettel := models.Zettel{Title: title, FilePath: zpath}
-	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if result := db.Create(&zettel); result.Error != nil {
 		return result.Error
 	}

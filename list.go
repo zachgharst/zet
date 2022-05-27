@@ -3,14 +3,11 @@ package main
 import (
 	"fmt"
 
-	"gorm.io/driver/sqlite"
+	"github.com/ZDGharst/zet/models"
 	"gorm.io/gorm"
-
-	"github.com/ZDGharst/zet/zet/models"
 )
 
-func List(zettels_directory string) error {
-	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+func List(db *gorm.DB) error {
 	var zettels []models.Zettel
 	result := db.Find(&zettels)
 	if result.Error != nil {
