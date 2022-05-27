@@ -9,7 +9,7 @@ import (
 
 func List(db *gorm.DB) error {
 	var zettels []models.Zettel
-	result := db.Find(&zettels)
+	result := db.Order("created_at desc").Find(&zettels)
 	if result.Error != nil {
 		return result.Error
 	}
