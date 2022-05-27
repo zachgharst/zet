@@ -14,8 +14,9 @@ func List(db *gorm.DB) error {
 		return result.Error
 	}
 
+	fmt.Println("Found", result.RowsAffected, "zettels")
 	for _, zettel := range zettels {
-		fmt.Println(zettel.Title)
+		fmt.Println(" ", zettel.Title)
 	}
 
 	return nil
