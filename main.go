@@ -20,22 +20,25 @@ func main() {
 		return
 	}
 
-	db, err := gorm.Open(sqlite.Open("zettel.db"), &gorm.Config{})
+	zettels_directory := os.Getenv("ZETTELS")
+	if zettels_directory == "" {
+		panic("ZETTELS env var not set")
+	}
+
+	db, err := gorm.Open(sqlite.Open(zettels_directory+"/.zetteldb"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database")
 	}
 	db.AutoMigrate(&models.Zettel{})
 
 	if os.Args[1] == "create" {
-		// todo: what if ZETTELS not set?
-		if err := Create(db, os.Getenv("ZETTELS"), os.Args[2]); err != nil {
+		if err := Create(db, zettels_directory, os.Args[2]); err != nil {
 			fmt.Println(err)
 		}
 		return
 	}
 
 	if os.Args[1] == "list" {
-		// todo: what if ZETTELS not set?
 		if err := List(db); err != nil {
 			fmt.Println(err)
 		}
@@ -43,8 +46,8 @@ func main() {
 	}
 
 	if os.Args[1] == "populatedb" {
-		// todo: what if ZETTELS not set?
-		if err := Populate_DB(db, os.Getenv("ZETTELS"), "2022"); err != nil {
+		// todo: hardcoded 2022
+		if err := Populate_DB(db, zettels_directory, "2022"); err != nil {
 			fmt.Println(err)
 		}
 		return
