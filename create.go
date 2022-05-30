@@ -30,13 +30,16 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 		return err
 	}
 
-	if _, err := os.Create(readme); err != nil {
+	file, err := os.Create(readme)
+	if err != nil {
 		return err
 	}
 
-	if err := os.WriteFile(readme, []byte("# "+title), 0644); err != nil {
+	if _, err := file.Write([]byte("# "+title)); err != nil {
 		return err
 	}
+
+	file.Close()
 
 	// Open README in vim
 	cmd := exec.Command("vim", readme)
