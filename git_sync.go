@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func Git_Sync(directory string) error {
+func Git_Sync(directory, message string) error {
 	if err := os.Chdir(directory); err != nil {
 		return err
 	}
@@ -23,17 +23,17 @@ func Git_Sync(directory string) error {
 		return err
 	}
 
-	// gc := exec.Command("git", "commit", "-m", title)
-	// gc.Stdout = os.Stdout
-	// if err := gc.Run(); err != nil {
-	// 	return err
-	// }
+	gc := exec.Command("git", "commit", "-m", message)
+	gc.Stdout = os.Stdout
+	if err := gc.Run(); err != nil {
+		return err
+	}
 
-	// gpush := exec.Command("git", "push")
-	// gpush.Stdout = os.Stdout
-	// if err := gpush.Run(); err != nil {
-	// 	return err
-	// }
+	gpush := exec.Command("git", "push")
+	gpush.Stdout = os.Stdout
+	if err := gpush.Run(); err != nil {
+		return err
+	}
 
 	return nil
 }

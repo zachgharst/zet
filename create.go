@@ -35,7 +35,7 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 		return err
 	}
 
-	if _, err := file.Write([]byte("# "+title)); err != nil {
+	if _, err := file.Write([]byte("# " + title)); err != nil {
 		return err
 	}
 
@@ -50,7 +50,7 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 	}
 
 	// Git operations
-	if err := Git_Sync(zpath); err != nil {
+	if err := Git_Sync(zpath, title); err != nil {
 		return err
 	}
 
