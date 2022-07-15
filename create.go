@@ -44,8 +44,7 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 
 	// Open README in vim
 	cmd := exec.Command("vim", readme)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
+	cmd.Stdin, cmd.Stdout = os.Stdin, os.Stdout
 	if err := cmd.Run(); err != nil {
 		return err
 	}
