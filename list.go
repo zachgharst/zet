@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func List(db *gorm.DB) error {
+func List(db *gorm.DB, verbose bool) error {
 	var zettels []models.Zettel
 	result := db.Order("created_at desc").Find(&zettels)
 	if result.Error != nil {
@@ -15,8 +15,18 @@ func List(db *gorm.DB) error {
 	}
 
 	fmt.Println("Found", result.RowsAffected, "zettels")
-	for _, zettel := range zettels {
-		fmt.Println(" ", zettel.Title)
+	for index, zettel := range zettels {
+		if verbose {
+			lineStr := fmt.Sprintf(
+				"  #%d: %s - %s",
+				len(zettels)-index,
+				zettel.Title,
+				zettel.FilePath,
+			)
+			fmt.Println(lineStr)
+		} else {
+			fmt.Println("  ", zettel.Title)
+		}
 	}
 
 	return nil

@@ -46,7 +46,8 @@ func main() {
 	}
 
 	if os.Args[1] == "list" {
-		if err := List(db); err != nil {
+		verbose := len(os.Args) > 2 && os.Args[2] == "-v"
+		if err := List(db, verbose); err != nil {
 			fmt.Println(err)
 		}
 		return
