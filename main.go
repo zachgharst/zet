@@ -39,12 +39,9 @@ func main() {
 	}
 
 	if os.Args[1] == "edit" {
-		zettels, err := FindByTitle(db, os.Args[2])
-		if err != nil {
+		if err := Edit(db, zettels_directory, os.Args[2]); err != nil {
 			fmt.Println(err)
 		}
-		Edit(zettels)
-
 		return
 	}
 
