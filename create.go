@@ -54,11 +54,9 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 	if err != nil {
 		return err
 	}
-
 	scanner := bufio.NewScanner(completedFile)
 	scanner.Scan()
 	title = scanner.Text()[2:]
-
 	completedFile.Close()
 
 	// Git operations
@@ -67,7 +65,7 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 	}
 
 	// Create row in database
-	zettel := models.Zettel{Title: title, FilePath: zpath}
+	zettel := models.Zettel{Title: title, FilePath: now.Format("20060102150405")}
 	if result := db.Create(&zettel); result.Error != nil {
 		return result.Error
 	}
