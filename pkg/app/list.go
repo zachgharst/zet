@@ -17,13 +17,12 @@ func ListAll(db *gorm.DB, verbose bool) error {
 	fmt.Println("Found", result.RowsAffected, "zettels")
 	for index, zettel := range zettels {
 		if verbose {
-			lineStr := fmt.Sprintf(
-				"  #%d: %s - %s",
+			fmt.Printf(
+				"  #%d: %s - %s\n",
 				len(zettels)-index,
 				zettel.Title,
 				zettel.FilePath,
 			)
-			fmt.Println(lineStr)
 		} else {
 			fmt.Println("  ", zettel.Title)
 		}

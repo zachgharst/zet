@@ -17,15 +17,15 @@ func Edit(db *gorm.DB, zettels_directory string, title string) error {
 	}
 
 	if len(zettels) > 1 {
-		fmt.Println(fmt.Sprintf("Found %d zettels matching \"%s\"", len(zettels), title))
+		fmt.Printf("Found %d zettels matching \"%s\"\n", len(zettels), title)
 		for _, v := range zettels {
 			fmt.Println("  " + v.Title)
 		}
-		return errors.New("Please refine your search.")
+		return errors.New("please refine your search")
 	}
 
 	if len(zettels) == 0 {
-		return errors.New("Found no zettels matching that title.")
+		return errors.New("found no zettels matching that title")
 	}
 
 	zettel := zettels[0]
