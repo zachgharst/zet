@@ -38,6 +38,16 @@ func main() {
 		return
 	}
 
+	if os.Args[1] == "edit" {
+		zettels, err := FindByTitle(db, os.Args[2])
+		if err != nil {
+			fmt.Println(err)
+		}
+		Edit(zettels)
+
+		return
+	}
+
 	if os.Args[1] == "list" {
 		if err := List(db); err != nil {
 			fmt.Println(err)
