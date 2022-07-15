@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -29,17 +30,41 @@ func Edit(db *gorm.DB, zettels_directory string, title string) error {
 
 	zettel := zettels[0]
 
-	readme := fmt.Sprintf(
-		"%s/%s/%s/README.md",
+	// Path to README
+	zpath := fmt.Sprintf(
+		"%s/%s/%s",
 		zettels_directory,
 		zettel.FilePath[:4],
 		zettel.FilePath,
 	)
+	readme := fmt.Sprintf("%s/README.md", zpath)
 
+	// Open README in vim
 	cmd := exec.Command("vim", readme)
 	cmd.Stdin, cmd.Stdout = os.Stdin, os.Stdout
 	if err := cmd.Run(); err != nil {
 		return err
+	}
+
+	// Get actual title from file
+	completedFile, err := os.Open(readme)
+	if err != nil {
+		return err
+	}
+	scanner := bufio.NewScanner(completedFile)
+	scanner.Scan()
+	title = scanner.Text()[2:]
+	completedFile.Close()
+
+	// Git operations
+	if err := Git_Sync(zpath, title); err != nil {
+		return err
+	}
+
+	// Edit row in database
+	zettel.Title = title
+	if result := db.Save(&zettel); result.Error != nil {
+		return result.Error
 	}
 
 	return nil
