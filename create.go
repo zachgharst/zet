@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"os"
@@ -48,6 +49,18 @@ func Create(db *gorm.DB, zettels_directory, title string) error {
 	if err := cmd.Run(); err != nil {
 		return err
 	}
+
+	// Get actual title from file
+	completedFile, err := os.Open(readme)
+	if err != nil {
+		return err
+	}
+
+	scanner := bufio.NewScanner(completedFile)
+	scanner.Scan()
+	title = scanner.Text()[2:]
+
+	completedFile.Close()
 
 	// Git operations
 	if err := Git_Sync(zpath, title); err != nil {
