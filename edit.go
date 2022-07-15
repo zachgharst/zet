@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -16,16 +17,15 @@ func Edit(db *gorm.DB, zettels_directory string, title string) error {
 	}
 
 	if len(zettels) > 1 {
-		fmt.Println(fmt.Sprintf("Found %d zettels matching that title", len(zettels)))
+		fmt.Println(fmt.Sprintf("Found %d zettels matching \"%s\"", len(zettels), title))
 		for _, v := range zettels {
 			fmt.Println("  " + v.Title)
 		}
-		return nil
+		return errors.New("Please refine your search.")
 	}
 
 	if len(zettels) == 0 {
-		fmt.Println("Found no zettels matching that title")
-		return nil
+		return errors.New("Found no zettels matching that title.")
 	}
 
 	zettel := zettels[0]
@@ -62,9 +62,11 @@ func Edit(db *gorm.DB, zettels_directory string, title string) error {
 	}
 
 	// Edit row in database
-	zettel.Title = title
-	if result := db.Save(&zettel); result.Error != nil {
-		return result.Error
+	if zettel.Title != title {
+		zettel.Title = title
+		if result := db.Save(&zettel); result.Error != nil {
+			return result.Error
+		}
 	}
 
 	return nil
