@@ -1,6 +1,6 @@
-module github.com/ZDGharst/zet
+module github.com/zachgharst/zet
 
-go 1.18
+go 1.20
 
 require (
 	gorm.io/driver/sqlite v1.3.2
