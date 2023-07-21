@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ZDGharst/zet/pkg/app"
-	"github.com/ZDGharst/zet/pkg/models"
+	"github.com/zachgharst/zet/pkg/app"
+	"github.com/zachgharst/zet/pkg/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

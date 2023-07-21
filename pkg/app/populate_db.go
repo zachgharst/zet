@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/ZDGharst/zet/pkg/models"
+	"github.com/zachgharst/zet/pkg/models"
 	"gorm.io/gorm"
 )
 
